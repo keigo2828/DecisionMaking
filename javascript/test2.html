@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>アンケート</title>
+  <style>
+    /* CSSでFlexboxを使って選択肢を横に並べる */
+    .question-options {
+      display: flex;
+    }
+
+    .question-options label {
+      margin-right: 20px;
+    }
+  </style>
+</head>
+<body>
+  <h1>アンケート</h1>
+  <form id="surveyForm">
+    <h2>質問1:</h2>
+    <div class="question-options">
+      <label for="question1Option1">
+        <input type="radio" name="question1" id="question1Option1" value="Option 1"> 選択肢 1
+      </label>
+      <label for="question1Option2">
+        <input type="radio" name="question1" id="question1Option2" value="Option 2"> 選択肢 2
+      </label>
+    </div>
+
+    <h2>質問2:</h2>
+    <div class="question-options">
+      <label for="question2Option1">
+        <input type="radio" name="question2" id="question2Option1" value="Option 1"> 選択肢 1
+      </label>
+      <label for="question2Option2">
+        <input type="radio" name="question2" id="question2Option2" value="Option 2"> 選択肢 2
+      </label>
+    </div>
+
+    <input type="submit" value="送信">
+  </form>
+  
+  <script>
+    // JavaScriptのコードは前回のままです
+    document.getElementById('surveyForm').addEventListener('submit', function(event) {
+      event.preventDefault();
+      const formData = new FormData(event.target);
+      const answers = {};
+      for (let [name, value] of formData) {
+        if (!answers[name]) {
+          answers[name] = value;
+        } else if (Array.isArray(answers[name])) {
+          answers[name].push(value);
+        } else {
+          answers[name] = [answers[name], value];
+        }
+      }
+      console.log('回答:', answers);
+    });
+  </script>
+</body>
+</html>
