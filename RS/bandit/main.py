@@ -67,7 +67,7 @@ class Sim_Last_Make_Decesiton(Sim):
 
 def main():
     arm = 2
-    sim = 10
+    sim = 1000
     #step = 111
 
     level = 0.5

@@ -11,7 +11,7 @@ average_p = [] # to store average of performance (proportion of maximum reward e
 average_time = [] # to save time 
 
 
-agent = Agent(default_utility=0)
+agent = Agent(default_utility=1.1)
 
 options = ['A','B'] 
 
@@ -21,8 +21,15 @@ create_action_history = [0]*runs
 instance_history = [0]*runs
 last_choice = [0]*runs
 
+p = 1
+
 a_counts = 8
 b_counts = 32
+print(a_counts*(1-p))
+resulta = [1]*int(a_counts*p) + [0]*int(a_counts*(1-p))
+
+resultb = [1]*int(b_counts*p) + [0]*int(b_counts*(1-p))
+
 
 action_a = [options[0] for i in range(a_counts)]
 action_b = [options[1] for i in range(b_counts)]
@@ -38,13 +45,16 @@ random.shuffle(action_a)
 for r in range(runs):
   pmax = []
   ttime = [0]
-  agent.reset() #clear the memory for a new run
-  
+  agent.reset() #clear the memory for a new run  
 
   random.shuffle(action_a)
+  random.shuffle(resulta)
+  random.shuffle(resultb)
+
   create_action_history[r] = copy.deepcopy(action_a)
 
-
+  a_ct = 0
+  b_ct = 0
 
   for i in range(trials):     
     start = time.time()
@@ -58,18 +68,44 @@ for r in range(runs):
     # determine the reward that agent can receive
     # if choice == 'A':
     #   reward = 3
-    if random.random() <= 0.8:
-      reward = -4
-    else:
-      reward = 0
+
+
+    # if random.random() <= 0.8:
+    #   reward = -4
+    # else:
+    #   reward = 0
     # store the instance
+
+    if i >= ct_ab :
+      if random.random() <= p:
+        reward = 1
+      else:
+        reward = -1
+    elif choice ==  "A":
+      if resulta[a_ct] == 1:
+         reward = 1
+         a_ct += 1
+      else:
+         reward = -1
+         a_ct += 1
+    elif choice ==  "B":
+      if resultb[b_ct] == 1:
+         reward = 1
+         b_ct += 1
+      else:
+         reward = -1
+         b_ct += 1
+
+
+
     agent.respond(reward)
 
     end = time.time()
     ttime.append(ttime[-1]+ end - start)
     pmax.append(choice == 'B') 
-    print(agent.utilitys)
-  print("????")
+  #   print(agent.utilitys)
+
+  # print("????")
   last_choice[r] = choice
   instance_history[r] = agent.instance_history
   average_p.append(pmax) # save performance of each run 
