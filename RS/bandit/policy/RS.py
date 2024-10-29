@@ -29,7 +29,8 @@ class RS:
 
     def choice_update(self,reward,t,s,action):
         self.bandit_ct[action] += 1
-        reliability =  self.bandit_ct[action] / np.sum(self.bandit_ct)
+        reliability =  self.bandit_ct[action] /np.sum(self.bandit_ct)
+        
         self.expected_value[action]  +=  (reward - self.expected_value[action]) / (self.bandit_ct[action] + 1)
         self.rs_value[action] = reliability * (self.expected_value[action] - self.aspiration_level) 
         self.action_history[t][s] = int(action)

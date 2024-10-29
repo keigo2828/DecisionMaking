@@ -21,7 +21,7 @@ class QLearning:
 
     def softmax(self):
         u = sum(np.exp(self.beta*self.Q_value))
-        return np.exp(self.Q_value)/unp
+        return np.exp(self.beta*self.Q_value)/u
         
 
     def select_action(self):

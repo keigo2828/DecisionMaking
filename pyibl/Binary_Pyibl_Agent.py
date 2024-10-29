@@ -19,9 +19,9 @@ def savelog(create_action_history,instance_history,last_choice):
   df1 = pd.DataFrame(instance_history)
   df2 = pd.DataFrame(last_choice)
 
-  df.to_csv("action.csv")
-  df1.to_csv("instance_history.csv")
-  df2.to_csv("last_history.csv")
+  df.to_csv("action_best.csv")
+  df1.to_csv("instance_history_best.csv")
+  df2.to_csv("last_history_best.csv")
 
 def CreatData(Choice, Order, Slot, Slot_Result, P, Uid):
   actionlist = [[0]*32 for _ in range(int(len(Order)/32))]
@@ -223,8 +223,8 @@ def main(du,no,de):
   SimuActionList = np.array(create_action_history)[:,32]
   #df6 = pd.DataFrame(SimuActionList)
   #df6.to_csv("sim.csv")
-  return colrate(SimuActionList,CorrectActionList)
-  #savelog(create_action_history,instance_history,last_choice)
+  #return colrate(SimuActionList,CorrectActionList)
+  savelog(create_action_history,instance_history,last_choice)
 
 
 def objective(trial):
@@ -239,20 +239,21 @@ def objective(trial):
 
 if __name__ == '__main__':
     print('started run')
-   # main()
+    main(du = 1.011  ,no = 0.964,de = 0.644)
 
     #study = optuna.create_study(direction="maximize")
-    study = optuna.create_study(direction="minimize")
-    study.optimize(objective, n_trials=300)
+    # study = optuna.create_study(direction="minimize")
+    # study.optimize(objective, n_trials=300)
 
-    trial = study.best_trial
+    # trial = study.best_trial
 
-    print("Accuracy: {}".format(trial.value))
-    print("Best hyperparameters: {}".format(trial.params))
-    slice_fig = optuna.visualization.plot_slice(study)
-    contour_fig  = optuna.visualization.plot_contour(study, params=["default_utility", "noise", "decay"])
-    slice_fig.write_image("slice_plot.png")
-    contour_fig.write_image("contour_plot.png")
+    # print("Accuracy: {}".format(trial.value))
+    # print("Best hyperparameters: {}".format(trial.params))
+    # slice_fig = optuna.visualization.plot_slice(study)
+    # contour_fig  = optuna.visualization.plot_contour(study, params=["default_utility", "noise", "decay"])
+    # slice_fig.write_image("slice_plot.png")
+    # contour_fig.write_image("contour_plot.png")
+
     print('finished run')
 
 # import matplotlib.pyplot as plt
